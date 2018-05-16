@@ -1,0 +1,159 @@
+{% extends 'libraryBundle::layout.html.twig' %}
+
+{% block title %}Ajouter un ouvrage{% endblock %}
+
+{% block body %}
+
+<div class="container page-content">
+  <h1>Ajouter un ouvrage</h1>
+  <div class="row">
+    <div class="col-md-12">
+
+      {{ form_start(form, {'attr': {'class': 'form-horizontal'} }) }}
+
+      <div class="form-group">
+        {{ form_label(form.image, 'Image') }}
+        {{ form_errors(form.image) }}
+        {{ form_widget(form.image, { 'attr':  {'class': 'form-control-file'}}) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(form.title, 'Titre') }}
+        {{ form_errors(form.title) }}
+        {{ form_widget(form.title, { 'attr':  {'class': 'form-control'}}) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(form.author, 'Auteur') }}
+        {{ form_errors(form.author) }}
+        {{ form_widget(form.author, { 'attr':  {'class': 'form-control'}}) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(form.summary, 'Résumé') }}
+        {{ form_errors(form.summary) }}
+        {{ form_widget(form.summary, { 'attr':  { 'class': 'form-control', 'rows' : '3', 'resize' : 'none' }}) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(form.publisher, 'Editeur') }}
+        {{ form_errors(form.publisher) }}
+        {{ form_widget(form.publisher, { 'attr':  {'class': 'form-control'}}) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(form.isbn, 'ISBN') }}
+        {{ form_errors(form.isbn) }}
+        {{ form_widget(form.isbn, { 'attr':  { 'class': 'form-control' }}) }}
+      </div>
+
+      {# <div class="form-check">
+      {{ form_label(form.categories, 'Categories') }}
+      {{ form_errors(form.categories) }}
+      {{ form_widget(form.categories, { 'attr':  {'class': 'form-check-input'}}) }}
+      </div> #}
+
+<div class="form-group">
+      {% for category in form.categories %}
+      <div class="form-check form-check-inline">
+         {{ form_widget(category, { 'attr':  {'class': 'form-check-input'}}) }}
+         &nbsp;{{ form_label(category) }}
+       </div>
+      {% endfor %}
+</div>
+      {# <div class="form-group">
+        {{ form_label(form.categories, 'Categories') }}
+        {{ form_errors(form.categories) }}
+        {{ form_widget(form.categories) }}
+      </div> #}
+
+      {# {{ form_row(form.categories, { 'attr':  {'class': 'form-check-input'}}) }} #}
+      {# <a href="#" id="add_category" class="btn btn-default">Ajouter une catégorie</a> #}
+
+      <div class="form-group">
+        {{ form_label(form.ebook, 'Ebook') }}
+        {{ form_errors(form.ebook) }}
+        {{ form_widget(form.ebook, { 'attr':  {'class': 'form-control-file'}}) }}
+      </div>
+
+      <div class="form-group">
+        <input class="btn btn-primary" type="submit" value="Ajouter">
+        <a class="btn btn-secondary" href="{{ path('library_homepage') }}" role="button">Annuler</a>
+      </div>
+      {{ form_rest(form) }}
+      {{ form_end(form) }}
+
+    </div>
+  </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+{# Voici le script en question : #}
+<script type="text/javascript">
+$(document).ready(function() {
+  // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+  var $container = $('div#book_categories');
+
+  // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
+  var index = $container.find(':input').length;
+
+  // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
+  $('#add_category').click(function(e) {
+    addCategory($container);
+
+    e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+    return false;
+  });
+
+  // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
+  if (index == 0) {
+    addCategory($container);
+  } else {
+    // S'il existe déjà des catégories, on ajoute un lien de suppression pour chacune d'entre elles
+    $container.children('div').each(function() {
+      addDeleteLink($(this));
+    });
+  }
+
+  // La fonction qui ajoute un formulaire CategoryType
+  function addCategory($container) {
+    // Dans le contenu de l'attribut « data-prototype », on remplace :
+    // - le texte "__name__label__" qu'il contient par le label du champ
+    // - le texte "__name__" qu'il contient par le numéro du champ
+    var template = $container.attr('data-prototype')
+    .replace(/__name__label__/g, 'Catégorie n°' + (index+1))
+    .replace(/__name__/g,        index)
+    ;
+
+    // On crée un objet jquery qui contient ce template
+    var $prototype = $(template);
+
+    // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+    addDeleteLink($prototype);
+
+    // On ajoute le prototype modifié à la fin de la balise <div>
+    $container.append($prototype);
+
+    // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+    index++;
+  }
+
+  // La fonction qui ajoute un lien de suppression d'une catégorie
+  function addDeleteLink($prototype) {
+    // Création du lien
+    var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+    // Ajout du lien
+    $prototype.append($deleteLink);
+
+    // Ajout du listener sur le clic du lien pour effectivement supprimer la catégorie
+    $deleteLink.click(function(e) {
+      $prototype.remove();
+
+      e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+      return false;
+    });
+  }
+});
+</script>
+
+{% endblock %}

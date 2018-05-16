@@ -1,0 +1,64 @@
+library_homepage:
+    path:     /
+    defaults: { _controller: libraryBundle:Default:index }
+
+library_homepage_by_category:
+    path:     /{id}/category
+    defaults: { _controller: libraryBundle:Default:category }
+    requirements:
+        id: \d+
+
+library_read_book:
+    path:     /{id}/read
+    defaults: { _controller: libraryBundle:Default:read }
+    requirements:
+        id: \d+
+
+library_preview_book:
+     path:     /{id}/preview
+     defaults: { _controller: libraryBundle:Default:preview }
+     requirements:
+        id: \d+
+
+
+# Administrator routes
+
+library_books:
+    path:     /admin/books
+    defaults: { _controller: libraryBundle:Admin:books }
+
+library_edit_book:
+     path:     /admin/{id}/edit
+     defaults: { _controller: libraryBundle:Admin:edit }
+     requirements:
+        id: \d+
+
+library_remove_book:
+     path:     /admin/{id}/remove
+     defaults: { _controller: libraryBundle:Admin:remove }
+     requirements:
+        id: \d+
+
+library_add_book:
+     path:     /admin/book/add
+     defaults: { _controller: libraryBundle:Admin:add }
+
+library_categories:
+    path:     /admin/categories
+    defaults: { _controller: libraryBundle:Admin:categories }
+
+library_edit_category:
+     path:     /admin/category/{id}/edit
+     defaults: { _controller: libraryBundle:Admin:editCategory }
+     requirements:
+        id: \d+
+
+library_remove_category:
+     path:     /admin/category/{id}/remove
+     defaults: { _controller: libraryBundle:Admin:removeCategory }
+     requirements:
+        id: \d+
+
+library_add_category:
+     path:     /admin/category/add
+     defaults: { _controller: libraryBundle:Admin:addCategory }

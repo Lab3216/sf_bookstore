@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>{% block title %}{% endblock %} - Lab3216</title>
+
+  {# <link rel="stylesheet" type="text/css" href="{{ asset('ressources/bootstrap/css/bootstrap.css') }}"> #}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  {# <link rel="stylesheet" type="text/css" href="{{'ressources/bootstrap/css/bootstrap.respnsive.css'}}"> #}
+  <link rel="stylesheet" type="text/css" href="{{ asset('ressources/css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('ressources/font-awesome/css/font-awesome.css') }}">
+
+
+  {% block stylesheets %}{% endblock %}
+
+  <link rel="icon" type="image/x-icon" href="{{ asset('icon.png') }}" />
+</head>
+<body>
+
+  <nav class="navbar navbar-toggleable-md fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="{{ path('library_homepage') }}">Bookstore</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        {% block navigation %}
+        <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item {{ app.request.attributes.get('_route') == 'library_homepage' ? 'active' }}">
+            <a class="nav-link" href="{{ path('library_homepage') }}">Accueil <span class="sr-only">(current)</span></a>
+          </li>
+        </li>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+        {% if is_granted("ROLE_ADMIN") %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Admin<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ path('library_books') }}">Ouvrages</a></li>
+            <li><a class="dropdown-item" href="{{ path('library_categories') }}">Catégories</a></li>
+            <li><div class="dropdown-divider"></div></li>
+            <li><a class="dropdown-item" href="{{ path('logout') }}">Déconnexion</a></li>
+          </ul>
+        </li>
+        {% endif %}
+        {% endif %}
+
+      </ul>
+      {% endblock %}
+
+    </div>
+  </div>
+</nav>
+
+{% block body %}{% endblock %}
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; Lab3216 - 2018</p>
+  </div>
+  <!-- /.container -->
+</footer>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<script>
+
+$('#confirm-delete').on('show.bs.modal', function(e) {
+  $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+});
+
+$(document).ready(function() {
+  jQuery('#advSlide').hide();
+  $('#advClick').click(function() {
+    if ($("#advSlide").is(":hidden")) {
+      $('#advClick').html('<i class="fa fa-minus"></i> Réduire');
+    } else {
+      $('#advClick').html('<i class="fa fa-plus"></i> Vue avancée')
+    }
+
+    $('#advSlide').slideToggle();
+
+  });
+});
+</script>
+
+{% block javascripts %}{% endblock %}
+
+</body>
+
+</html>

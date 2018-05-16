@@ -1,0 +1,38 @@
+{% extends 'libraryBundle::layout.html.twig' %}
+
+{% block title %}Modifier une catégorie{% endblock %}
+
+{% block body %}
+
+<div class="container page-content">
+  <h1>Modifier une catégorie</h1>
+  <div class="row">
+    <div class="col-md-12">
+
+      {{ form_start(form, {'attr': {'class': 'form-horizontal'} }) }}
+
+      <div class="form-group">
+        {{ form_label(form.name, 'Nom') }}
+        {{ form_errors(form.name) }}
+        {{ form_widget(form.name, { 'attr':  {'class': 'form-control'}}) }}
+      </div>
+
+      <div class="form-group">
+        {{ form_label(form.summary, 'Résumé') }}
+        {{ form_errors(form.summary) }}
+        {{ form_widget(form.summary, { 'attr':  { 'class': 'form-control', 'rows' : '3', 'resize' : 'none' }}) }}
+      </div>
+
+
+      <div class="form-group">
+        <input class="btn btn-primary" type="submit">
+        <a class="btn btn-secondary" href="{{ path('library_homepage') }}" role="button">Annuler</a>
+      </div>
+      {{ form_rest(form) }}
+      {{ form_end(form) }}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

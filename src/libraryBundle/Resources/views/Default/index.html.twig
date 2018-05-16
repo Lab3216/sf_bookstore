@@ -1,0 +1,69 @@
+{% extends 'libraryBundle::layout.html.twig' %}
+
+{% block title %}Home page{% endblock %}
+
+{% block body %}
+<div class="container page-content"><h1>Ouvrages disponibles</h1>
+  <div class="row">
+
+    <div class="col-lg-10">
+      <div class="row">
+        {% if not books %}
+        <div class="alert-danger">No books found...</div>
+        {% else %}
+
+        {% for book in books %}
+
+        {# {% if book.available == true %} #}
+        <div class="col-sm-6 col-md-3">
+          <div class="card">
+            {% if book.image and book.image.url %}
+            <div class="card-img home-card">
+              <img src="{{ '/uploads/' ~ book.image.url }}" class="card-img-top" alt="...">
+            </div>
+            {% else %}
+            <img src="http://lorempicsum.com/futurama/220/135/{{ book.id % 9 + 1 }}" class="card-img-top" alt="...">
+            {% endif %}
+
+            <div class="card-body">
+              <h6 class="card-title">{{ book.title }}
+                {# {% if book.new == true %}
+                <span class="badge badge-primary">Nouveau</span>
+                {% endif %} #}
+              </h6>
+              <p class="card-text">{{ book.summary|truncate(50, true, '...') }}</p>
+
+                <a target="_blank" href="{{ book.ebook.url ? asset('uploads/' ~ book.ebook.url) }}" class="btn btn-primary">Lire</a>
+              <a href="{{ path('library_preview_book', {'id': book.id}) }}" class="btn btn-default">Aperçu</a>
+
+            </div>
+
+          </div>
+        </div>
+        {# {% endif %} #}
+        {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+
+      <div {# class="card card-default" #}>
+        <div {# class="card-header" #}>
+          <h2>Libellés</h2>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-action"><a href="{{ path('library_homepage')}}">Tous</a></li>
+          {% for category in categories %}
+          <li class="list-group-item list-group-item-action"><a href="{{ path('library_homepage_by_category',{'id' : category.id })}}">{{ category.name }}</a></li> {#{{ path('library_courses_by_category',{'topic_id' : topic.id }) }}#}
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

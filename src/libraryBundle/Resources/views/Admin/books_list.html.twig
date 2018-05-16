@@ -1,0 +1,46 @@
+{% extends 'libraryBundle::layout.html.twig' %}
+
+{% block title %}Liste des ouvrages{% endblock %}
+
+  {% block body %}
+
+    <div class="container page-content">
+      <h1>Liste des ouvrages</h1>
+      <div class="row">
+        <div class="col-md-12">
+          {% if books %}
+            <table class="table table-hover">
+              <thead align="center">
+                {# <th>Id</th> #}
+                <th>Titre</th>
+                <th>Résumé</th>
+                <th>Auteur</th>
+                {# <th>Nouveau</th> #}
+                <th >Modifier</th><th>Apercu</th><th>Lire</th>
+              </thead>
+              {% for book in books %}
+                <tr>
+                  {# <td>{{ book.id }}</td> #}
+                  <td>{{ book.title }}</td>
+                  <td>{{ book.summary|truncate(50, true, '...') }}</td>
+                  <td>{{ book.author }}</td>
+                  {# <td align="center">{{ book.new == true ? '<i class="fa fa-new"></i>' : '' }}</td> #}
+
+                  <td align="center"><a title="Modifier" href="{{ path('library_edit_book', {'id': book.id}) }}"><i class="fa fa-edit"></i></a></td>
+                  <td align="center"><a title="Aperçu" href="{{ path('library_preview_book', {'id': book.id}) }}"><i class="fa fa-eye"></i></a></td>
+                  <td align="center"><a title="Démarrer" target="_blank" href="{{ book.ebook.url ? asset('uploads/' ~ book.ebook.url) }}"><i class="fa fa-play-circle"></i></a></td>
+                </tr>
+              {% endfor %}
+            </table>
+          {% else %}
+            <p><b>No books match...</b></p>
+          {% endif %}
+
+          <div class="form-group">
+            <a class="btn btn-primary" href="{{ path('library_add_book') }}" ><i class="fa fa-plus-square"></i> Ajouter un ouvrage</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'libraryBundle::layout.html.twig' %}
+
+{% block title %}Preview book{% endblock %}
+
+{% block body %}
+
+<div class="container page-content">
+  <h1>Résumé de l'ouvrage</h1>
+  <div class="row">
+    <div class="col-md-3">
+      {% if book.image and book.image.url %}
+      <div class="img"></div>
+      <img src="{{ '../../uploads/' ~ book.image.url }}" class="img-fluid">
+      {% else %}
+      <img src="http://lorempicsum.com/futurama/220/135/{{ book.id % 9 + 1 }}" class="img-fluid" alt="...">
+      {% endif %}
+    </div>
+    <div class="col-md-9">
+      {% if book %}
+      <h2><strong>Titre : </strong>{{ book.title }}</h2>
+      <p><strong>Auteur : </strong>{{ book.author }}</p>
+      <p><strong>Résumé : </strong>{{ book.summary }}</p>
+      <p><strong>Editeur : </strong>{{ book.publisher }}</p>
+      <p><strong>Catégories : </strong>
+        {% if not book.categories.empty %}
+
+        {% for category in book.categories %}
+        {{ category.name }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </p>
+        {% else %}
+          <p>Aucune catégorie liée...</p>
+        {% endif %}
+
+      {% else %}
+      <p>Aucune information trouvée!</p>
+      {% endif %}
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <button class="btn btn-default" onclick="history.go(-1)">Retour</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
